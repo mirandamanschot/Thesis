@@ -3,7 +3,7 @@ setwd("C:/Users/miran/Documents/thesis_giveaways")
 
 #libraries
 library(dplyr)
-
+library(readr)
 #load & inspect data
 giveaways <- read.csv("Data/giveaways_thesis.csv")
 author_df <- read.csv("Data/author_df.csv")
@@ -25,4 +25,22 @@ booklist <- subset(booklist, duplicate < 2 & weird == 0)
 
 #combine giveaways & book list via book ID (1 if giveaway, 0 else)
 booklist$giveaway <- ifelse(booklist$book_id %in% giveaways$book_id, 1,0)
+
+#change copy type to dummy (0 ebook, 1 hard copy)
+booklist$booktype_dummy <-ifelse(booklist$is_ebook== 'False',1,0)
+
+#add winning_odds to booklist
+
+booklist$n_copy <- ifelse(booklist$book_id %in% giveaways$book_id, giveaways$copy_n, 0)
+booklist$n_participants <- ifelse(booklist$book_id %in% giveaways$book_id, giveaways$request_n, 0)
+booklist$winning_odds <-(booklist$n_copy/booklist$n_participants)
+
+#remove inf as it shifts the mean and they have no participants
+booklist <- subset(booklist, winning_odds < 'inf')
+
+#save file
+write.csv(booklist, 'Data/booklist.csv', row.names = F)
+
+
+
 

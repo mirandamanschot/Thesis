@@ -16,8 +16,7 @@ dfSummary(booklist)
 #around 51% of dataset participates in giveaway
 #around 25% only is an ebook, 70% is physical copy
 
-#change giveaway such that NaN = 0
-booklist$giveaway[is.na(booklist$giveaway)] <- 0
+
 
 #descriptive statistics
 
@@ -49,6 +48,7 @@ ggplot(booklist, aes(x = giveaway, y = average_rating,)) + geom_bar(position = "
     y = "Mean rating"
   )
 dev.off()
+
 #graph rating count
 jpeg("descriptive rating count.jpeg")
 ggplot(booklist, aes(x = giveaway, y = ratings_count,)) + geom_bar(position = "dodge", stat = 'summary') +
@@ -60,5 +60,17 @@ ggplot(booklist, aes(x = giveaway, y = ratings_count,)) + geom_bar(position = "d
     x = "Giveaway",
     y = "Mean rating count"
   )
+dev.off()
 
+#graph winning oddst
+jpeg("descriptive winning odds.jpeg")
+ggplot(booklist, aes(x = giveaway, y = winning_odds,)) + geom_bar(position = "dodge", stat = 'summary') +
+  facet_wrap( ~ booktype, ncol = 3) +
+  stat_summary(aes(label=round(..y..,2)), fun= 'mean', geom="text", size=3, vjust = -0.5) +
+  theme_bw() +
+  labs(
+    title = "Average winning odds per book type",
+    x = "Giveaway",
+    y = "Mean winning odds"
+  )
 dev.off()

@@ -120,6 +120,7 @@ merged.df <- subset(merged.df, year_month != "NA-NA" & publication_year < 2023 &
 
 #change giveaway to 0 and 1
 merged.df[is.na(merged.df$giveaway)] <- 0
+
 dfSummary(merged.df)
 
 #save file

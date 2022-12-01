@@ -15,18 +15,19 @@ booklist <- read.csv("Data/merged_df.csv")
 dfSummary(booklist)
 #around 51% of dataset participates in giveaway
 #around 25% only is an ebook, 70% is physical copy
-
-
+sink('raw data.xlxs')
+describe.by(giveaways)
+sink()
 
 #descriptive statistics
 
-sink('descriptives.doc')
+sink('descriptives.csv')
 describeBy(booklist~ giveaway + booktype, skew = F)
 sink()   
 
 #graph reviews
 jpeg("descriptive reviews.jpeg")
-ggplot(booklist, aes(x = giveaway, y = text_reviews_count,)) + geom_bar(position = "dodge", stat = 'summary') +
+ggplot(booklist, aes(x = giveaway, y = text_reviews_count, fill = giveaway)) + geom_bar(position = "dodge", stat = 'summary') +
   facet_wrap( ~ booktype, ncol = 3) +
   stat_summary(aes(label=round(..y..,2)), fun= 'mean', geom="text", size=3, vjust = -0.5) +
   theme_bw() +
@@ -38,9 +39,9 @@ ggplot(booklist, aes(x = giveaway, y = text_reviews_count,)) + geom_bar(position
 dev.off()
 #graph ratings
 jpeg("descriptive ratings.jpeg")
-ggplot(booklist, aes(x = giveaway, y = average_rating,)) + geom_bar(position = "dodge", stat = 'summary') +
+ggplot(ratings, aes(x = giveaway, y = ratings, fill = giveaway)) + geom_bar(position = "dodge", stat = 'summary') +
   facet_wrap( ~ booktype, ncol = 3) +
-  stat_summary(aes(label=round(..y..,2)), fun= 'mean', geom="text", size=3, vjust = -0.5) +
+  stat_summary(aes(label=round(..y..,2)), fun= 'mean_se', geom="text", size=3, vjust = -0.5) +
   theme_bw() +
   labs(
     title = "Average rating per book type",
@@ -64,7 +65,7 @@ dev.off()
 
 #graph winning oddst
 jpeg("descriptive winning odds.jpeg")
-ggplot(booklist, aes(x = giveaway, y = winning_odds,)) + geom_bar(position = "dodge", stat = 'summary') +
+ggplot(booklist, aes(x = giveaway, y = winning_odds, fill = giveaway)) + geom_bar(position = "dodge", stat = 'summary') +
   facet_wrap( ~ booktype, ncol = 3) +
   stat_summary(aes(label=round(..y..,2)), fun= 'mean', geom="text", size=3, vjust = -0.5) +
   theme_bw() +

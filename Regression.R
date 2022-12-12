@@ -35,7 +35,26 @@ vif(regression_review)
 sink('results.xlxs')
 stargazer(regression_rating, regression_ratingcount, regression_review, title="Results", align = T, type = 'text', no.space=T, single.row = T)
 sink()
-#### Assumptions check ###
-targazer(regression_rating, type = 'text', no.space=T, single.row = T)
 
-summary(booklist)
+#New regressions
+ratings <- fread("Data/ratings.csv")
+df3 <- fread("Data/volume_df.csv")
+regression_rating <- felm(ratings ~ giveaway + giveaway:factor(booktype) + giveaway:winning_odds|
+                            book_id +
+                            time,
+                          data = ratings)
+summary(regression_rating)
+vif(regression_rating)
+
+
+regression_volume <- felm(volume ~ giveaway + giveaway:factor(booktype) + giveaway:winning_odds|
+                            timeym +
+                            book_id,
+                          data = df3)
+
+
+sink('results_final.xlxs')
+stargazer(regression_rating, regression_volume, title="Results", align = T, type = 'text', no.space=T, single.row = T)
+sink()
+
+dfSummary(ratings$booktype)

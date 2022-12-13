@@ -49,3 +49,4 @@ write.csv(ratings, 'Data/ratings.csv', row.names = F)
 write.csv(df3, 'Data/volume_df.csv', row.names = F)
 
 dfSummary(ratings$giveaway)
+

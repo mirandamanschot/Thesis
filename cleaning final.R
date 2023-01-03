@@ -28,7 +28,7 @@ booklist$weird <- ifelse(booklist$average_rating > 0 & booklist$ratings_count ==
 booklist <- subset(booklist, duplicate < 2 & weird == 0)
 
 #removeformat is blank
-booklist <- subset(booklist, format != "" & format != "U,nknown Binding")
+booklist <- subset(booklist, format != "" & format != "Unknown Binding")
 
 dfSummary(booklist$format)
 #combine giveaways & book list via book ID (1 if giveaway, 0 else)
